@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- /src/main/resources/spring-db.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/aop
+   http://www.springframework.org/schema/aop/spring-aop.xsd">
+<!-- db 연결 객체 생성 : Connection Pool로 설정. 
+    미리 만들어진 Connection 객체들의 저장 공간  -->  
+  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+        destroy-method="close">
+    <property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />          
+    <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl" />          
+    <property name="user" value="pys" />  <!-- 각자 userid로 설정 -->
+    <property name="password" value="1234" /> <!-- 각자 비밀번호로 설정 -->
+    <property name="maxPoolSize" value="20" /> <!-- 최대 컨넥션객체의 갯수를 정하는것 -->
+    <property name="minPoolSize" value="3" /> <!-- 최소 컨넥션객체의 갯수를 정하는것 -->
+    <property name="initialPoolSize" value="5" /> <!-- 초기에 만들어지는 컨넥션객체의 갯수를 정하는것 -->
+    <property name="acquireIncrement" value="5" /> <!-- 컨넥션객체의 증가 갯수를 정하는것 -->     
+  </bean>
+ 
+<!-- mybatis 관련 설정 
+<bean id="sqlSessionFactory"  class="org.mybatis.spring.SqlSessionFactoryBean">
+  <property name="dataSource" ref="dataSource" />
+  <property name="configLocation" value="classpath:mybatis-config.xml"/>
+</bean>
+<bean id="sqlSessionTemplate"  class="org.mybatis.spring.SqlSessionTemplate">
+  <constructor-arg ref="sqlSessionFactory"/>
+</bean>
+-->
+</beans>

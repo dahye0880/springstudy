@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- /src/main/resources/spring-mvc.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xmlns:websocket="http://www.springframework.org/schema/websocket"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/aop
+   http://www.springframework.org/schema/aop/spring-aop.xsd
+   http://www.springframework.org/schema/mvc
+   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+   http://www.springframework.org/schema/websocket
+   http://www.springframework.org/schema/websocket/spring-websocket-4.1.xsd">
+
+<mvc:default-servlet-handler />  <!-- .css, .js 등 제외 -->
+
+<!--  url 정보와 controller를 매핑 : -->
+   <bean class=
+"org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
+<!-- controller,logic,dao 패키지에 속한 클래스 중 @Component(@Controller,@Service,@Repository) 어노테이션을 가진
+    클래스를 객체화 -->                   
+   <context:component-scan base-package="controller,logic,dao,aop" />
+<!-- web 환경에서 사용되는 어노테이션 설정 -->   
+   <mvc:annotation-driven />
+   <!-- DI : 의존성 주입.
+        AOP: 관점지향 프로그래밍 -->
+    <aop:aspectj-autoproxy />
+   	
+   <!-- view 결정자. : /WEB-INF/view/board/write.jsp 이런식으로  -->        
+   <bean id="viewResolver"
+     class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+     <property name="viewClass">
+        <value>org.springframework.web.servlet.view.JstlView</value>
+     </property>
+     <property name="prefix"><value>/WEB-INF/view/</value></property>
+     <property name="suffix"><value>.jsp</value></property>
+   </bean>   
+   <!-- 파일 업로드 관련 설정 : enctype="multipart/form-data"인 경우 자동으로 실행.
+   		파일업로드 : 브라우저에서 선택된 파일의 내용을 서버로 전송을 하는것.
+   		         파일의 이름 + 파일의 내용 => 서버로 전송해서 전송된 내용을 서버의 파일로 저장하는것
+   		CommonsMultipartResolver : 파라미터 정보, 파일의 내용의 정보를 구분해서 저장.
+   		maxUploadSize : 최대 업로드 가능 크기 설정. 100M까지 업로드 가능이라고 설정 , 기본값으로도 설정이됨
+   		maxInMemorySize : 메모리에 저장하는 최대 크기를 설정. 10M까지로 설정 , 기본값으로도 설정이됨
+   		
+    -->
+   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+   p:maxUploadSize="104854600" p:maxInMemorySize="10485760"></bean>
+ <!-- messageSource : message 코드값을 저장한 properties파일을 설정
+ 		value값이 message이기 때문에 messages.properties를 찾아간다.
+  -->
+  <bean id="messageSource" 
+       class="org.springframework.context.support.ResourceBundleMessageSource">
+     <property name="basenames"><list>
+     <value>messages</value></list></property>
+  </bean> 
+  
+  <!-- 예외처리 부분 -->
+  <bean id="exceptionHandler"  class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+     <property name="exceptionMappings">
+     <value>exception.BoardException=exception
+     			  exception.LoginException=exception</value></property>
+  </bean> 
+</beans>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--  /WEB-INF/decorators.xml -->
+<decorators defaultdir="/layout">
+   <decorator name="main" page="layout.jsp">
+      <pattern>/</pattern><!-- layout.jsp -> 모든 요청이 들어올시 layout.jsp 를 끌고오라고 하는것.  -->
+   </decorator>
+   <excludes>
+   <pattern>/user/idsearch*</pattern>
+   <pattern>/user/pwsearch*</pattern>
+   </excludes>
+</decorators>
