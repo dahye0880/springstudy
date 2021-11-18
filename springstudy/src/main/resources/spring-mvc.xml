@@ -64,6 +64,7 @@
   <bean id="exceptionHandler"  class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
      <property name="exceptionMappings">
      <value>exception.BoardException=exception
-     			  exception.LoginException=exception</value></property>
+     			  exception.LoginException=exception
+     			  exception.CartException=exception</value></property>
   </bean> 
 </beans>

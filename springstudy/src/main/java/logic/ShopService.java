@@ -152,6 +152,39 @@ public class ShopService {
 			e.printStackTrace();
 		}
 	}
+
+	public void itemUpdate(Item item, HttpServletRequest request) {
+		if(item.getPicture() != null && !item.getPicture().isEmpty()) { //업로드된 파일이 존재하면
+			uploadPictureCreate(item.getPicture(),request);				  //파일로 저장
+			item.setPictureUrl(item.getPicture().getOriginalFilename()); //업로드된 파일의 이름 setFilrurl
+		}		
+		//db에 내용 추가		
+		itemDao.update(item);
+	}
+
+	public void itemDelete(int id) {
+		itemDao.delete(id);
+		
+	}
+	/*
+	 * Sale객체를 전달할것이다.
+	 * sale,saleitem 테이블에 저장하기->궁극적 목적
+	 * 1. sale 테이블의 saleid값의 최대값을 조회 : 최대값+1
+	 * 2. sale 정보 저장 : userid(로그인정보에 있는거), sysdate
+	 * 3. Cart데이터에서 saleitem 데이터를 추출해서 insert 해주면 됨
+	 * 4. saleitem 정보를 sale 데이터에 List 형태로 저장
+	 * 5. sale 데이터를 return.
+	 * Dao2개
+	 */
+	public Sale checkend(User loginUser, Cart cart) {
+		
+		return null;
+	}
+
+	
+
+	
+	
 	
 
 	

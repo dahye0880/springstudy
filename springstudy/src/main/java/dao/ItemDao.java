@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -47,6 +48,17 @@ public class ItemDao {
 				+" values (:id,:name,:price,:description,:pictureUrl)";
 				
 		template.update(sql, param);//db에 데이터 추가하기 //param 에는  board 객체가 들어간다.
+		
+	}
+	public void update(Item item) {
+		SqlParameterSource param = new BeanPropertySqlParameterSource(item);
+		String sql = "update item set name=:name, price=:price,description=:description,pictureUrl=:pictureUrl where id=:id";
+		template.update(sql, param);
+	}
+	public void delete(int id) {
+		param.clear();
+		param.put("id", id);
+		template.update("delete from item where id=:id", param);
 		
 	}
 
